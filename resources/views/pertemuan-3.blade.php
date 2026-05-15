@@ -1,1 +1,0 @@
-selamat datang laravel - F1E324029 dan RIOLOCTA LUKIE RAMADIAN
