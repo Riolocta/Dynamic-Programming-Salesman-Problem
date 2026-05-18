@@ -2,1133 +2,696 @@
 <html lang="id">
 
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>
-Simulasi Dynamic Programming TSP
-</title>
-
-<style>
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
-
-body{
-
-  min-height:100vh;
-
-  background:
-  linear-gradient(
-    135deg,
-    #0f172a,
-    #1e293b,
-    #020617
-  );
-
-  color:#e5e7eb;
-
-  padding:24px;
-
-}
-
-.container{
-
-  max-width:1300px;
-
-  margin:auto;
-
-}
-
-header{
-
-  text-align:center;
-
-  margin-bottom:24px;
-
-}
-
-header h1{
-
-  color:#38bdf8;
-
-  margin-bottom:10px;
-
-  font-size:36px;
-
-}
-
-header p{
-
-  color:#cbd5e1;
-
-  line-height:1.7;
-
-}
-
-.layout{
-
-  display:grid;
-
-  grid-template-columns:
-  1.2fr 0.8fr;
-
-  gap:20px;
-
-}
-
-.card{
-
-  background:
-  rgba(15,23,42,0.92);
-
-  border-radius:20px;
-
-  padding:22px;
-
-  border:
-  1px solid rgba(148,163,184,0.25);
-
-  box-shadow:
-  0 0 30px rgba(0,0,0,0.25);
-
-}
-
-.card h2{
-
-  margin-bottom:16px;
-
-  color:#f8fafc;
-
-}
-
-.controls{
-
-  display:flex;
-
-  gap:10px;
-
-  margin-bottom:18px;
-
-  flex-wrap:wrap;
-
-}
-
-button{
-
-  border:none;
-
-  padding:12px 18px;
-
-  border-radius:12px;
-
-  cursor:pointer;
-
-  font-weight:bold;
-
-  transition:0.3s;
-
-  background:#38bdf8;
-
-  color:#020617;
-
-}
-
-button:hover{
-
-  transform:translateY(-2px);
-
-}
-
-button.secondary{
-
-  background:#22c55e;
-
-  color:white;
-
-}
-
-button.danger{
-
-  background:#ef4444;
-
-  color:white;
-
-}
-
-canvas{
-
-  width:100%;
-
-  height:430px;
-
-  background:#020617;
-
-  border-radius:18px;
-
-  border:
-  1px solid rgba(148,163,184,0.2);
-
-}
-
-.result{
-
-  margin-top:18px;
-
-  background:
-  rgba(34,197,94,0.15);
-
-  padding:16px;
-
-  border-radius:14px;
-
-  line-height:1.8;
-
-  font-size:16px;
-
-}
-
-.route-table-box{
-
-  margin-top:24px;
-
-  background:
-  rgba(255,255,255,0.03);
-
-  border-radius:18px;
-
-  padding:20px;
-
-  border:
-  1px solid rgba(148,163,184,0.15);
-
-}
-
-.route-title{
-
-  font-size:24px;
-
-  margin-bottom:18px;
-
-  color:#f8fafc;
-
-}
-
-.route-table{
-
-  width:100%;
-
-  border-collapse:collapse;
-
-  overflow:hidden;
-
-  margin-bottom:20px;
-
-}
-
-.route-table th{
-
-  background:#1e293b;
-
-  color:#7dd3fc;
-
-  padding:14px;
-
-  border:
-  1px solid rgba(148,163,184,0.2);
-
-}
-
-.route-table td{
-
-  padding:14px;
-
-  border:
-  1px solid rgba(148,163,184,0.15);
-
-  text-align:center;
-
-  color:#e5e7eb;
-
-}
-
-.route-table tr:hover{
-
-  background:
-  rgba(56,189,248,0.08);
-
-}
-
-.optimal-box{
-
-  background:
-  rgba(34,197,94,0.12);
-
-  border:
-  1px solid rgba(34,197,94,0.2);
-
-  border-radius:14px;
-
-  padding:16px;
-
-  line-height:1.8;
-
-}
-
-.optimal-box h3{
-
-  color:#22c55e;
-
-  margin-bottom:10px;
-
-}
-
-.explanation{
-
-  line-height:1.9;
-
-  background:
-  rgba(255,255,255,0.03);
-
-  padding:16px;
-
-  border-radius:14px;
-
-  margin-bottom:18px;
-
-}
-
-.steps{
-
-  max-height:260px;
-
-  overflow-y:auto;
-
-  background:#020617;
-
-  border-radius:14px;
-
-  padding:12px;
-
-}
-
-.step{
-
-  padding:10px;
-
-  border-bottom:
-  1px solid rgba(148,163,184,0.15);
-
-  color:#cbd5e1;
-
-}
-
-table{
-
-  width:100%;
-
-  border-collapse:collapse;
-
-  margin-top:12px;
-
-  background:#020617;
-
-}
-
-th,td{
-
-  border:
-  1px solid rgba(148,163,184,0.2);
-
-  padding:8px;
-
-  text-align:center;
-
-}
-
-th{
-
-  background:#1e293b;
-
-  color:#7dd3fc;
-
-}
-
-@media(max-width:900px){
-
-  .layout{
-
-    grid-template-columns:1fr;
-
-  }
-
-}
-
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulasi Dynamic Programming - Traveling Salesman Problem</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #020617);
+      color: #e5e7eb;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      color: #38bdf8;
+    }
+
+    header p {
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 14px;
+      color: #f8fafc;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      color: #020617;
+      background: #38bdf8;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      background: #7dd3fc;
+    }
+
+    button.secondary {
+      background: #a7f3d0;
+    }
+
+    button.danger {
+      background: #fca5a5;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    input[type="range"] {
+      width: 160px;
+    }
+
+    input[type="range"]:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .range-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #020617;
+      border-radius: 12px;
+      padding: 8px 12px;
+      color: #cbd5e1;
+    }
+
+    canvas {
+      width: 100%;
+      height: 430px;
+      background: radial-gradient(circle at center, #1e293b, #020617);
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      display: block;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .info-box {
+      background: #020617;
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .info-box span {
+      display: block;
+      color: #94a3b8;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .info-box strong {
+      color: #f8fafc;
+      font-size: 18px;
+    }
+
+    .explanation {
+      line-height: 1.7;
+      color: #dbeafe;
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .steps {
+      max-height: 250px;
+      overflow-y: auto;
+      background: #020617;
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      font-size: 14px;
+    }
+
+    .step {
+      padding: 8px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      color: #cbd5e1;
+    }
+
+    .step.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-radius: 10px;
+      color: #ffffff;
+    }
+
+    .matrix-wrap {
+      overflow-x: auto;
+      margin-top: 14px;
+      max-height: 240px;
+    }
+
+    .matrix-panel {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      border-radius: 18px;
+      padding: 14px;
+      margin-top: 16px;
+    }
+
+    .matrix-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #7dd3fc;
+      font-size: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: #020617;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #1e293b;
+      color: #7dd3fc;
+    }
+
+    td {
+      color: #e5e7eb;
+    }
+
+    .result {
+      margin-top: 16px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(56, 189, 248, 0.15));
+      border: 1px solid rgba(125, 211, 252, 0.25);
+      border-radius: 14px;
+      padding: 14px;
+      line-height: 1.7;
+    }
+
+    .highlight-route td {
+      background: rgba(34, 197, 94, 0.2);
+      color: #f8fafc;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #0ea5e9;
+      color: #020617;
+      font-weight: bold;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-<div class="container">
-
-<header>
-
-<h1>
-Simulasi Dynamic Programming TSP
-</h1>
-
-<p>
-
-Traveling Salesman Problem:
-mencari rute terpendek untuk
-mengunjungi semua kota tepat
-satu kali lalu kembali ke kota awal.
-
-</p>
-
-</header>
-
-<div class="layout">
-
-<section class="card">
-
-<h2>
-Peta Kota
-</h2>
-
-<div class="controls">
-
-<button onclick="generateCities()">
-Muat Kota
-</button>
-
-<button
-class="secondary"
-onclick="solveTSP()">
-
-Jalankan DP
-
-</button>
-
-<button
-onclick="playSimulation()"
-id="playBtn"
-disabled>
-
-Animasi
-
-</button>
-
-<button
-class="danger"
-onclick="resetAll()">
-
-Reset
-
-</button>
-
-</div>
-
-<canvas
-id="mapCanvas"
-width="760"
-height="430">
-</canvas>
-
-<div class="result" id="resultBox">
-
-Klik
-<b>Muat Kota</b>
-lalu klik
-<b>Jalankan DP</b>
-
-</div>
-
-<div class="route-table-box">
-
-<h2 class="route-title">
-
-Perbandingan Seluruh Rute
-
-</h2>
-
-<table class="route-table">
-
-<thead>
-
-<tr>
-
-<th>
-Rute
-</th>
-
-<th>
-Total Jarak
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td>
-A → C → E → F → D → B → A
-</td>
-
-<td>
-98 km
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-A → B → D → E → F → C → A
-</td>
-
-<td>
-102 km
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-A → B → E → D → C → F → A
-</td>
-
-<td>
-109 km
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-A → F → D → C → E → B → A
-</td>
-
-<td>
-113 km
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-A → B → C → D → E → F → A
-</td>
-
-<td>
-119 km
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-A → C → B → D → F → E → A
-</td>
-
-<td>
-121 km
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-<div class="optimal-box">
-
-<h3>
-Solusi Optimal
-</h3>
-
-<p>
-
-Rute optimal yang diperoleh adalah:
-
-<br><br>
-
-<b>
-A → C → E → F → D → B → A
-</b>
-
-<br><br>
-
-dengan total jarak minimum:
-
-<br><br>
-
-<b>
-98 km
-</b>
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<aside class="card">
-
-<h2>
-Penjelasan Algoritma
-</h2>
-
-<div class="explanation">
-
-Algoritma Dynamic Programming
-untuk TSP memakai konsep
-<b>bitmask</b>.
-
-<br><br>
-
-Rumus utama:
-
-<br><br>
-
-<b>
-dp[mask][i]
-</b>
-
-<br><br>
-
-yaitu jarak minimum
-untuk mengunjungi seluruh kota
-dalam mask dan berakhir di kota i.
-
-<br><br>
-
-Algoritma mencoba seluruh
-kemungkinan rute,
-kemudian menyimpan hasil terbaik
-agar perhitungan tidak diulang.
-
-<br><br>
-
-Metode ini dikenal sebagai
-<b>Held-Karp Algorithm</b>
-
-<br><br>
-
-Kompleksitas:
-
-<br><br>
-
-<b>
-O(n² · 2ⁿ)
-</b>
-
-</div>
-
-<h2>
-Langkah DP
-</h2>
-
-<div class="steps" id="stepsBox">
-
-<div class="step">
-
-Belum ada proses.
-
-</div>
-
-</div>
-
-<h2 style="margin-top:18px;">
-
-Matriks Jarak
-
-</h2>
-
-<div id="matrixBox"></div>
-
-</aside>
-
-</div>
-
-</div>
-
-<script>
-
-const canvas =
-document.getElementById(
-"mapCanvas"
-);
-
-const ctx =
-canvas.getContext("2d");
-
-let cities = [];
-let dist = [];
-let bestPath = [];
-let bestCost = Infinity;
-let animationIndex = 0;
-let animationTimer = null;
-let steps = [];
-
-function generateCities(){
-
-clearInterval(animationTimer);
-
-cities = [
-
-{ x:70, y:80, name:"A" },
-
-{ x:250, y:50, name:"B" },
-
-{ x:540, y:90, name:"C" },
-
-{ x:660, y:320, name:"D" },
-
-{ x:390, y:380, name:"E" },
-
-{ x:130, y:300, name:"F" }
-
-];
-
-dist = [
-
-[0,10,15,20,25,18],
-[10,0,35,25,17,28],
-[15,35,0,30,20,26],
-[20,25,30,0,14,16],
-[25,17,20,14,0,12],
-[18,28,26,16,12,0]
-
-];
-
-drawMap();
-
-renderMatrix();
-
-renderSteps();
-
-}
-
-function solveTSP(){
-
-bestPath =
-[0,2,4,5,3,1,0];
-
-bestCost = 98;
-
-drawMap(bestPath);
-
-document.getElementById(
-"resultBox"
-).innerHTML = `
-
-<b>
-Jarak minimum:
-</b>
-
-${bestCost}
-
-<br>
-
-<b>
-Rute:
-</b>
-
-A → C → E → F → D → B → A
-
-`;
-
-steps = [
-
-"Mulai dari kota A",
-
-"Menuju kota C",
-
-"Menuju kota E",
-
-"Menuju kota F",
-
-"Menuju kota D",
-
-"Menuju kota B",
-
-"Kembali ke kota A",
-
-"Total jarak minimum = 98"
-
-];
-
-renderSteps();
-
-document.getElementById(
-"playBtn"
-).disabled = false;
-
-}
-
-function playSimulation(){
-
-if(bestPath.length === 0)
-return;
-
-clearInterval(animationTimer);
-
-animationIndex = 1;
-
-drawAnimatedPath();
-
-animationTimer =
-setInterval(()=>{
-
-animationIndex++;
-
-drawAnimatedPath();
-
-if(
-animationIndex >= bestPath.length
-){
-
-clearInterval(animationTimer);
-
-}
-
-},700);
-
-}
-
-function drawAnimatedPath(){
-
-const partialPath =
-bestPath.slice(
-0,
-animationIndex + 1
-);
-
-drawMap(partialPath);
-
-}
-
-function drawMap(path=[]){
-
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-drawGrid();
-
-for(let i=0;i<cities.length;i++){
-
-for(let j=i+1;j<cities.length;j++){
-
-ctx.beginPath();
-
-ctx.moveTo(
-cities[i].x,
-cities[i].y
-);
-
-ctx.lineTo(
-cities[j].x,
-cities[j].y
-);
-
-ctx.strokeStyle =
-"rgba(148,163,184,0.16)";
-
-ctx.lineWidth = 1;
-
-ctx.stroke();
-
-let midX =
-(cities[i].x + cities[j].x) / 2;
-
-let midY =
-(cities[i].y + cities[j].y) / 2;
-
-if(dist[i][j] == 17){
-
-midY += 20;
-
-}
-
-if(dist[i][j] == 20){
-
-midY += 15;
-
-}
-
-if(dist[i][j] == 26){
-
-midY -= 20;
-
-midX += 60;
-
-}
-
-ctx.fillStyle =
-"#94a3b8";
-
-ctx.font =
-"12px Arial";
-
-ctx.textAlign =
-"center";
-
-ctx.textBaseline =
-"middle";
-
-ctx.fillText(
-dist[i][j],
-midX,
-midY
-);
-
-}
-
-}
-
-if(path.length > 1){
-
-ctx.beginPath();
-
-ctx.moveTo(
-cities[path[0]].x,
-cities[path[0]].y
-);
-
-for(let i=1;i<path.length;i++){
-
-ctx.lineTo(
-cities[path[i]].x,
-cities[path[i]].y
-);
-
-}
-
-ctx.strokeStyle =
-"#22c55e";
-
-ctx.lineWidth = 5;
-
-ctx.lineCap = "round";
-
-ctx.lineJoin = "round";
-
-ctx.stroke();
-
-}
-
-cities.forEach((city,index)=>{
-
-ctx.beginPath();
-
-ctx.arc(
-city.x,
-city.y,
-18,
-0,
-Math.PI * 2
-);
-
-ctx.fillStyle =
-index===0
-? "#facc15"
-: "#38bdf8";
-
-ctx.fill();
-
-ctx.strokeStyle =
-"#ffffff";
-
-ctx.lineWidth = 2;
-
-ctx.stroke();
-
-ctx.fillStyle =
-"#020617";
-
-ctx.font =
-"bold 14px Arial";
-
-ctx.fillText(
-city.name,
-city.x,
-city.y
-);
-
-});
-
-}
-
-function drawGrid(){
-
-ctx.strokeStyle =
-"rgba(148,163,184,0.08)";
-
-for(let x=0;x<canvas.width;x+=40){
-
-ctx.beginPath();
-
-ctx.moveTo(x,0);
-
-ctx.lineTo(x,canvas.height);
-
-ctx.stroke();
-
-}
-
-for(let y=0;y<canvas.height;y+=40){
-
-ctx.beginPath();
-
-ctx.moveTo(0,y);
-
-ctx.lineTo(canvas.width,y);
-
-ctx.stroke();
-
-}
-
-}
-
-function renderSteps(){
-
-const stepsBox =
-document.getElementById(
-"stepsBox"
-);
-
-if(steps.length === 0){
-
-stepsBox.innerHTML = `
-<div class="step">
-Belum ada proses.
-</div>
-`;
-
-return;
-
-}
-
-stepsBox.innerHTML =
-steps.map(step=>`
-
-<div class="step">
-${step}
-</div>
-
-`).join("");
-
-}
-
-function renderMatrix(){
-
-const matrixBox =
-document.getElementById(
-"matrixBox"
-);
-
-let html =
-"<table><thead><tr><th>Kota</th>";
-
-for(let i=0;i<cities.length;i++){
-
-html += `
-<th>
-${cities[i].name}
-</th>
-`;
-
-}
-
-html += "</tr></thead><tbody>";
-
-for(let i=0;i<cities.length;i++){
-
-html += `
-<tr>
-<th>${cities[i].name}</th>
-`;
-
-for(let j=0;j<cities.length;j++){
-
-html += `
-<td>
-${dist[i][j]}
-</td>
-`;
-
-}
-
-html += "</tr>";
-
-}
-
-html += "</tbody></table>";
-
-matrixBox.innerHTML = html;
-
-}
-
-function resetAll(){
-
-clearInterval(animationTimer);
-
-bestPath = [];
-
-bestCost = Infinity;
-
-steps = [];
-
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-renderSteps();
-
-document.getElementById(
-"matrixBox"
-).innerHTML = "";
-
-document.getElementById(
-"resultBox"
-).innerHTML = `
-
-Klik
-<b>Muat Kota</b>
-lalu klik
-<b>Jalankan DP</b>
-
-`;
-
-}
-
-generateCities();
-
-</script>
-
+  <div class="container">
+    <header>
+      <h1>Simulasi Dynamic Programming TSP</h1>
+      <p>
+        Traveling Salesman Problem: mencari rute terpendek untuk mengunjungi semua kota tepat satu kali,
+        lalu kembali ke kota awal.
+      </p>
+    </header>
+
+    <div class="layout">
+      <section class="card">
+        <h2>Peta Kota</h2>
+
+        <div class="controls">
+          <button onclick="generateCities()">Buat Kota</button>
+          <button class="secondary" onclick="solveTSP()">Jalankan DP</button>
+          <button onclick="playSimulation()" id="playBtn" disabled>Animasi Rute</button>
+          <button class="danger" onclick="resetAll()">Reset</button>
+
+          <div class="range-box">
+            <label for="cityRange">Jumlah kota:</label>
+            <input id="cityRange" type="range" min="4" max="10" value="6" oninput="updateCityCount()" />
+            <strong id="cityCountLabel">6</strong>
+          </div>
+        </div>
+
+        <canvas id="mapCanvas" width="760" height="430"></canvas>
+
+        <div class="matrix-panel">
+          <div class="matrix-title">Matriks Jarak (Fixed, ditampilkan di dalam peta)</div>
+          <div class="matrix-wrap" id="matrixBox"></div>
+        </div>
+
+        <h2 style="margin-top: 16px;">Rute Terbaik</h2>
+        <div class="matrix-wrap" id="comparisonBox"></div>
+
+        <div class="result" id="resultBox">
+          <span class="badge">Status</span>
+          <div>Klik <b>Buat Kota</b>, lalu klik <b>Jalankan DP</b>.</div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>Penjelasan Algoritma</h2>
+
+        <p class="explanation">
+          Algoritma Dynamic Programming untuk TSP memakai konsep <b>bitmask</b>.
+          Setiap subset kota disimpan sebagai bilangan biner. Rumus utamanya:
+          <br><br>
+          <b>dp[mask][i]</b> = jarak minimum untuk mengunjungi kota dalam <b>mask</b>
+          dan berhenti di kota <b>i</b>.
+        </p>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <span>Jumlah Kota</span>
+            <strong id="infoCities">6</strong>
+          </div>
+          <div class="info-box">
+            <span>Kompleksitas</span>
+            <strong>O(n² · 2ⁿ)</strong>
+          </div>
+          <div class="info-box">
+            <span>Start</span>
+            <strong>Kota 0</strong>
+          </div>
+          <div class="info-box">
+            <span>Metode</span>
+            <strong>Held-Karp</strong>
+          </div>
+        </div>
+
+        <h2>Langkah DP</h2>
+        <div class="steps" id="stepsBox">
+          <div class="step">Belum ada proses.</div>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("mapCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let cityCount = 6;
+    const fixedDistanceMatrix = [
+      [0, 29, 20, 21, 16, 31, 34, 27, 39, 24],
+      [29, 0, 15, 29, 28, 40, 20, 35, 33, 22],
+      [20, 15, 0, 15, 14, 25, 18, 23, 30, 16],
+      [21, 29, 15, 0, 4, 12, 11, 19, 22, 18],
+      [16, 28, 14, 4, 0, 16, 14, 21, 24, 17],
+      [31, 40, 25, 12, 16, 0, 20, 28, 26, 21],
+      [34, 20, 18, 11, 14, 20, 0, 15, 18, 12],
+      [27, 35, 23, 19, 21, 28, 15, 0, 13, 20],
+      [39, 33, 30, 22, 24, 26, 18, 13, 0, 19],
+      [24, 22, 16, 18, 17, 21, 12, 20, 19, 0]
+    ];
+    const fixedCityPositions = [
+      { x: 110, y: 80, name: 0 },
+      { x: 260, y: 60, name: 1 },
+      { x: 460, y: 80, name: 2 },
+      { x: 610, y: 90, name: 3 },
+      { x: 160, y: 230, name: 4 },
+      { x: 360, y: 240, name: 5 },
+      { x: 540, y: 220, name: 6 },
+      { x: 210, y: 350, name: 7 },
+      { x: 420, y: 340, name: 8 },
+      { x: 620, y: 310, name: 9 }
+    ];
+
+    let cities = [];
+    let dist = [];
+    let bestPath = [];
+    let bestCost = Infinity;
+    let animationIndex = 0;
+    let animationTimer = null;
+    let steps = [];
+
+    function updateCityCount() {
+      cityCount = Number(document.getElementById("cityRange").value);
+      document.getElementById("cityCountLabel").textContent = cityCount;
+      document.getElementById("infoCities").textContent = cityCount;
+      generateCities();
+    }
+
+    function generateCities() {
+      clearInterval(animationTimer);
+      animationIndex = 0;
+      bestPath = [];
+      bestCost = Infinity;
+      steps = [];
+      document.getElementById("playBtn").disabled = true;
+
+      cities = fixedCityPositions.slice(0, cityCount);
+      buildDistanceMatrix();
+      drawMap();
+      renderMatrix();
+      renderSteps();
+
+      document.getElementById("resultBox").innerHTML = `
+        <span class="badge">Status</span>
+        <div>Kota berhasil dibuat. Klik <b>Jalankan DP</b> untuk mencari rute minimum.</div>
+      `;
+    }
+
+    function buildDistanceMatrix() {
+      dist = fixedDistanceMatrix.slice(0, cityCount).map(row => row.slice(0, cityCount));
+    }
+
+    function solveTSP() {
+      clearInterval(animationTimer);
+      animationIndex = 0;
+      steps = [];
+
+      const n = cityCount;
+      const totalMask = 1 << n;
+      const dp = Array.from({ length: totalMask }, () => Array(n).fill(Infinity));
+      const parent = Array.from({ length: totalMask }, () => Array(n).fill(-1));
+
+      dp[1][0] = 0;
+      steps.push("Mulai dari Kota 0. dp[000...1][0] = 0");
+
+      for (let mask = 1; mask < totalMask; mask++) {
+        for (let last = 0; last < n; last++) {
+          if (!(mask & (1 << last))) continue;
+          if (dp[mask][last] === Infinity) continue;
+
+          for (let next = 0; next < n; next++) {
+            if (mask & (1 << next)) continue;
+
+            const newMask = mask | (1 << next);
+            const newCost = dp[mask][last] + dist[last][next];
+
+            if (newCost < dp[newMask][next]) {
+              dp[newMask][next] = newCost;
+              parent[newMask][next] = last;
+
+              steps.push(
+                `Dari Kota ${last} ke Kota ${next}: ` +
+                `dp[${toBinary(newMask, n)}][${next}] = ${newCost}`
+              );
+            }
+          }
+        }
+      }
+
+      const fullMask = totalMask - 1;
+      bestCost = Infinity;
+      let lastCity = -1;
+
+      for (let i = 1; i < n; i++) {
+        const totalCost = dp[fullMask][i] + dist[i][0];
+        steps.push(`Kembali dari Kota ${i} ke Kota 0. Total = ${totalCost}`);
+
+        if (totalCost < bestCost) {
+          bestCost = totalCost;
+          lastCity = i;
+        }
+      }
+
+      bestPath = reconstructPath(parent, fullMask, lastCity);
+      bestPath.push(0);
+
+      const allRoutes = computeAllRoutes(n);
+      renderRouteComparison(allRoutes, bestCost);
+      drawMap(bestPath);
+      renderSteps();
+      document.getElementById("playBtn").disabled = false;
+
+      document.getElementById("resultBox").innerHTML = `
+        <span class="badge">Hasil Terbaik</span>
+        <div><b>Jarak minimum:</b> ${bestCost}</div>
+        <div><b>Rute:</b> ${bestPath.map(c => "Kota " + c).join(" → ")}</div>
+      `;
+    }
+
+    function reconstructPath(parent, mask, lastCity) {
+      const path = [];
+      let current = lastCity;
+      let currentMask = mask;
+
+      while (current !== -1) {
+        path.push(current);
+        const prev = parent[currentMask][current];
+        currentMask = currentMask ^ (1 << current);
+        current = prev;
+      }
+
+      return path.reverse();
+    }
+
+    function toBinary(num, length) {
+      return num.toString(2).padStart(length, "0");
+    }
+
+    function playSimulation() {
+      if (bestPath.length === 0) return;
+
+      clearInterval(animationTimer);
+      animationIndex = 1;
+      drawAnimatedPath();
+
+      animationTimer = setInterval(() => {
+        animationIndex++;
+        drawAnimatedPath();
+
+        if (animationIndex >= bestPath.length) {
+          clearInterval(animationTimer);
+        }
+      }, 700);
+    }
+
+    function drawAnimatedPath() {
+      const partialPath = bestPath.slice(0, animationIndex + 1);
+      drawMap(partialPath);
+    }
+
+    function drawMap(path = []) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      drawGrid();
+
+      for (let i = 0; i < cities.length; i++) {
+        for (let j = i + 1; j < cities.length; j++) {
+          ctx.beginPath();
+          ctx.moveTo(cities[i].x, cities[i].y);
+          ctx.lineTo(cities[j].x, cities[j].y);
+          ctx.strokeStyle = "rgba(148, 163, 184, 0.16)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+
+      if (path.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(cities[path[0]].x, cities[path[0]].y);
+
+        for (let i = 1; i < path.length; i++) {
+          ctx.lineTo(cities[path[i]].x, cities[path[i]].y);
+        }
+
+        ctx.strokeStyle = "#22c55e";
+        ctx.lineWidth = 5;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.stroke();
+      }
+
+      cities.forEach((city, index) => {
+        ctx.beginPath();
+        ctx.arc(city.x, city.y, index === 0 ? 18 : 15, 0, Math.PI * 2);
+        ctx.fillStyle = index === 0 ? "#facc15" : "#38bdf8";
+        ctx.fill();
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = "#020617";
+        ctx.font = "bold 14px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(city.name, city.x, city.y);
+      });
+    }
+
+    function drawGrid() {
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.08)";
+      ctx.lineWidth = 1;
+
+      for (let x = 0; x < canvas.width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+
+      for (let y = 0; y < canvas.height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+    }
+
+    function renderSteps() {
+      const stepsBox = document.getElementById("stepsBox");
+
+      if (steps.length === 0) {
+        stepsBox.innerHTML = `<div class="step">Belum ada proses.</div>`;
+        return;
+      }
+
+      stepsBox.innerHTML = steps
+        .slice(-120)
+        .map((step, index, arr) => {
+          const activeClass = index === arr.length - 1 ? "active" : "";
+          return `<div class="step ${activeClass}">${step}</div>`;
+        })
+        .join("");
+
+      stepsBox.scrollTop = stepsBox.scrollHeight;
+    }
+
+    function renderMatrix() {
+      const matrixBox = document.getElementById("matrixBox");
+      let html = "<table><thead><tr><th>Kota</th>";
+
+      for (let i = 0; i < cityCount; i++) {
+        html += `<th>${i}</th>`;
+      }
+
+      html += "</tr></thead><tbody>";
+
+      for (let i = 0; i < cityCount; i++) {
+        html += `<tr><th>${i}</th>`;
+        for (let j = 0; j < cityCount; j++) {
+          html += `<td>${dist[i][j]}</td>`;
+        }
+        html += "</tr>";
+      }
+
+      html += "</tbody></table>";
+      matrixBox.innerHTML = html;
+    }
+
+    function computeAllRoutes(n) {
+      const cityList = [];
+      for (let i = 1; i < n; i++) cityList.push(i);
+
+      const routes = [];
+      function permute(arr, current) {
+        if (arr.length === 0) {
+          const path = [0, ...current, 0];
+          let cost = 0;
+          for (let i = 0; i < path.length - 1; i++) {
+            cost += dist[path[i]][path[i + 1]];
+          }
+          routes.push({ path, cost });
+          return;
+        }
+
+        for (let i = 0; i < arr.length; i++) {
+          const next = arr[i];
+          const remaining = arr.slice(0, i).concat(arr.slice(i + 1));
+          current.push(next);
+          permute(remaining, current);
+          current.pop();
+        }
+      }
+
+      permute(cityList, []);
+      return routes.sort((a, b) => a.cost - b.cost);
+    }
+
+    function renderRouteComparison(routes, bestCost) {
+      const comparisonBox = document.getElementById("comparisonBox");
+      const limitedRoutes = routes.slice(0, 9);
+      let html = "<table><thead><tr><th>No</th><th>Rute</th><th>Jarak</th></tr></thead><tbody>";
+
+      limitedRoutes.forEach((route, index) => {
+        const routeText = route.path.map(c => `Kota ${c}`).join(" → ");
+        const highlight = route.cost === bestCost ? " class=\"highlight-route\"" : "";
+        html += `<tr${highlight}><td>${index + 1}</td><td>${routeText}</td><td>${route.cost}</td></tr>`;
+      });
+
+      html += "</tbody></table>";
+      comparisonBox.innerHTML = html;
+    }
+
+    function resetAll() {
+      clearInterval(animationTimer);
+      cities = [];
+      dist = [];
+      bestPath = [];
+      bestCost = Infinity;
+      steps = [];
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      renderSteps();
+      document.getElementById("matrixBox").innerHTML = "";
+      document.getElementById("playBtn").disabled = true;
+      document.getElementById("resultBox").innerHTML = `
+        <span class="badge">Status</span>
+        <div>Klik <b>Acak Kota</b>, lalu klik <b>Jalankan DP</b>.</div>
+      `;
+    }
+
+    generateCities();
+  </script>
 </body>
 </html>
